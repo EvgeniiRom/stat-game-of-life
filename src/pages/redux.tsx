@@ -5,11 +5,13 @@ const ReduxPage = () => {
     const name = useSelector(statNameSelector);
     const dispatch = useDispatch();
 
-    return <div>
-        {name}
-        <button onClick={() => dispatch(login("player"))}>LOGIN</button>
-        <button onClick={() => dispatch(logout())}>LOGOUT</button>
-    </div>
-}
+    return (
+        <div>
+            {name}
+            <button onClick={() => dispatch(login("player"))}>LOGIN</button>
+            <button onClick={() => dispatch(logout())}>LOGOUT</button>
+        </div>
+    );
+};
 
 export default ReduxPage;
