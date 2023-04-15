@@ -14,9 +14,11 @@
     "test": "jest"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.9.3",
     "@types/node": "18.15.11",
     "@types/react": "18.0.35",
     "@types/react-dom": "18.0.11",
+    "@types/redux-persist": "^4.3.1",
     "@types/styled-components": "^5.1.26",
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
@@ -24,11 +26,13 @@
     "next": "13.3.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-redux": "^8.0.5",
+    "redux-persist": "^6.0.0",
+    "redux-saga": "^1.2.3",
     "styled-components": "^5.3.9",
     "typescript": "5.0.4"
   },
   "devDependencies": {
-    "@mdx-js/react": "^1.6.22",
     "@storybook/addon-actions": "^6.5.16",
     "@storybook/addon-essentials": "^6.5.16",
     "@storybook/addon-interactions": "^6.5.16",
@@ -42,6 +46,7 @@
     "eslint-plugin-storybook": "^0.6.11",
     "jest-environment-jsdom": "^29.5.0",
     "loki": "^0.31.1",
+    "redux-saga-test-plan": "^4.0.6",
     "storybook": "^6.5.16"
   },
   "loki": {
