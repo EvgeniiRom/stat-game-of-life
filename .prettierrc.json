@@ -1,4 +1,4 @@
 {
-    "max-len": 120,
+    "printWidth": 120,
     "tabWidth": 4
 }

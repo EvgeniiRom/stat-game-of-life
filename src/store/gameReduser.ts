@@ -34,10 +34,7 @@ const initState: GameState = {
     size: undefined,
 };
 
-export default function reducer(
-    state: GameState = initState,
-    action: Action
-): GameState {
+export default function reducer(state: GameState = initState, action: Action): GameState {
     switch (action.type) {
         case ADD_GEN:
             return { ...initState };

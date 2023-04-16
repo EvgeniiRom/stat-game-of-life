@@ -25,10 +25,7 @@ const initState: StatisticState = {
     finished: [],
 };
 
-export default function reducer(
-    state: StatisticState = initState,
-    action: Action
-): StatisticState {
+export default function reducer(state: StatisticState = initState, action: Action): StatisticState {
     switch (action.type) {
         case ADD_GAME:
             return { ...state };

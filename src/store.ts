@@ -1,20 +1,9 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import gameReduser from "./store/gameReduser";
-import sessionReduser from "./store/sessionReduser";
+import sessionReduser, { loginSaga } from "./store/sessionReduser";
 import statisticReduser from "./store/statisticReduser";
 import createSagaMiddleware from "redux-saga";
 import { all } from "redux-saga/effects";
-import createWebStorage from "redux-persist/lib/storage/createWebStorage";
-import {
-    persistStore,
-    persistReducer,
-    FLUSH,
-    REHYDRATE,
-    PAUSE,
-    PERSIST,
-    PURGE,
-    REGISTER,
-} from "redux-persist";
 
 const rootReducer = combineReducers({
     game: gameReduser,
@@ -23,56 +12,17 @@ const rootReducer = combineReducers({
 });
 
 function* rootSaga() {
-    yield all([]);
+    yield all([loginSaga()]);
 }
 
-const createNoopStorage = () => {
-    return {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        getItem(_key: string) {
-            return Promise.resolve(null);
-        },
-        setItem(_key: string, value: string) {
-            return Promise.resolve(value);
-        },
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        removeItem(_key: string) {
-            return Promise.resolve();
-        },
-    };
-};
-
-const storage =
-    typeof window !== "undefined"
-        ? createWebStorage("local")
-        : createNoopStorage();
-
-const persistConfig = {
-    key: "root",
-    storage,
-};
-
-export function setupStore() {
+export function setupStore(runSaga: boolean) {
     const sagaMiddleware = createSagaMiddleware();
     const store = configureStore({
-        reducer: persistReducer(persistConfig, rootReducer),
-        middleware: (getDefaultMiddleware) =>
-            getDefaultMiddleware({
-                serializableCheck: {
-                    ignoredActions: [
-                        FLUSH,
-                        REHYDRATE,
-                        PAUSE,
-                        PERSIST,
-                        PURGE,
-                        REGISTER,
-                    ],
-                },
-            }).concat(sagaMiddleware),
+        reducer: rootReducer,
+        middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware),
     });
-    sagaMiddleware.run(rootSaga);
-    const persistor = persistStore(store);
-    return { store, persistor };
+    runSaga && sagaMiddleware.run(rootSaga);
+    return store;
 }
 
 export type RootState = ReturnType<typeof rootReducer>;

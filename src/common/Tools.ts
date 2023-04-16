@@ -7,11 +7,7 @@ export interface Field {
     generation: number;
 }
 
-export const generateFieldData = (
-    width: number,
-    height: number,
-    randomPercent = 0
-): number[][] => {
+export const generateFieldData = (width: number, height: number, randomPercent = 0): number[][] => {
     const result = [];
     for (let i = 0; i < height; i++) {
         const row = [];
@@ -24,12 +20,7 @@ export const generateFieldData = (
     return result;
 };
 
-const fillFieldRandom = (
-    fieldData: number[][],
-    width: number,
-    height: number,
-    percent: number
-) => {
+const fillFieldRandom = (fieldData: number[][], width: number, height: number, percent: number) => {
     const count = Math.floor((width * height * percent) / 100);
     for (let r = 0; r < count; r++) {
         let deadOffset = 0;
@@ -101,11 +92,7 @@ export const generateNextGeneration = (field: Field): Field => {
     return { ...field, data: result, generation: generation + 1 };
 };
 
-export const generateField = (
-    width: number,
-    height: number,
-    randomPercent = 0
-): Field => {
+export const generateField = (width: number, height: number, randomPercent = 0): Field => {
     return {
         data: generateFieldData(width, height, randomPercent),
         width: width,

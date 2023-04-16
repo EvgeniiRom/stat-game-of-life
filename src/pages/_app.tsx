@@ -1,17 +1,19 @@
-import { setupStore } from "@/store";
+import { AppStore, setupStore } from "@/store";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
+import { useEffect, useState } from "react";
 import { Provider } from "react-redux";
-import { PersistGate } from "redux-persist/integration/react";
 
 export default function App({ Component, pageProps }: AppProps) {
-    const store = setupStore();
+    const [store, setStore] = useState<AppStore>(setupStore(false));
+
+    useEffect(() => {
+        setStore(setupStore(true));
+    }, []);
 
     return (
-        <Provider store={store.store}>
-            <PersistGate loading={null} persistor={store.persistor}>
-                <Component {...pageProps} />
-            </PersistGate>
+        <Provider store={store}>
+            <Component {...pageProps} />
         </Provider>
     );
 }

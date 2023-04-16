@@ -30,11 +30,7 @@ describe("game processes test", () => {
 
         describe("random filled", () => {
             it("valid percent", () => {
-                const getSum = (array: number[][]) =>
-                    array.reduce(
-                        (sum, row) => row.reduce((a, b) => a + b) + sum,
-                        0
-                    );
+                const getSum = (array: number[][]) => array.reduce((sum, row) => row.reduce((a, b) => a + b) + sum, 0);
                 expect(getSum(generateFieldData(10, 10, 0))).toBe(0);
                 expect(getSum(generateFieldData(10, 10, 17))).toBe(17);
                 expect(getSum(generateFieldData(10, 10, 42))).toBe(42);
@@ -43,11 +39,7 @@ describe("game processes test", () => {
             });
 
             it("different fields", () => {
-                const getSum = (array: number[][]) =>
-                    array.reduce(
-                        (sum, row) => row.reduce((a, b) => a + b) + sum,
-                        0
-                    );
+                const getSum = (array: number[][]) => array.reduce((sum, row) => row.reduce((a, b) => a + b) + sum, 0);
                 const res1 = generateFieldData(123, 45, 42);
                 const res2 = generateFieldData(123, 45, 42);
                 expect(getSum(res1)).toBe(2324);
@@ -138,9 +130,7 @@ describe("game processes test", () => {
                 [0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0],
             ];
-            expect(
-                getEnvironment({ data, generation: 0, width: 5, height: 5 })
-            ).toEqual([
+            expect(getEnvironment({ data, generation: 0, width: 5, height: 5 })).toEqual([
                 [0, 0, 0, 0, 0],
                 [0, 1, 1, 1, 0],
                 [0, 1, 0, 1, 0],
@@ -157,9 +147,7 @@ describe("game processes test", () => {
                 [0, 0, 0, 1, 0, 0],
                 [0, 0, 0, 0, 0, 0],
             ];
-            expect(
-                getEnvironment({ data, generation: 0, width: 6, height: 5 })
-            ).toEqual([
+            expect(getEnvironment({ data, generation: 0, width: 6, height: 5 })).toEqual([
                 [0, 0, 0, 0, 0, 0],
                 [0, 1, 1, 1, 0, 0],
                 [0, 1, 1, 2, 1, 0],
