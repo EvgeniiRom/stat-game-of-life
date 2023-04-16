@@ -12,20 +12,10 @@ export default {
 
 const store = setupStore(false);
 
-const Template: ComponentStory<typeof TopMenu> = (args) => (
+const Template: ComponentStory<typeof TopMenu> = () => (
     <Provider store={store}>
-        <TopMenu text="Generation 0" {...args} />
+        <TopMenu />
     </Provider>
 );
 
 export const Default = Template.bind({});
-
-export const Run = Template.bind({});
-Run.args = {
-    active: "run",
-};
-
-export const Pause = Template.bind({});
-Pause.args = {
-    active: "pause",
-};

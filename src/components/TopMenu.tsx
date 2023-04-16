@@ -7,15 +7,8 @@ import LogoutButton from "./styled/LogoutButton";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, playerNameSelector } from "../store/sessionReduser";
-
-export type ModeButtonType = "run" | "pause" | "clear" | "random";
-
-export interface TopMenuProps {
-    active?: ModeButtonType;
-    onClick?: (type: ModeButtonType) => void;
-    onRandomClick?: (value: number) => void;
-    text?: string;
-}
+import { modeSelector, setMode, clean, lastGenerationSelector, setGen } from "../store/gameReduser";
+import { generateField } from "../common/Tools";
 
 const ProfileContainer = styled.div`
     display: flex;
@@ -23,12 +16,13 @@ const ProfileContainer = styled.div`
     height: 100%;
 `;
 
-const TopMenu = (props: TopMenuProps) => {
-    const { active, onClick = () => undefined, onRandomClick = () => undefined, text = "" } = props;
-
+const TopMenu = () => {
     const [random, setRandom] = useState<string>("50%");
+
     const dispatch = useDispatch();
     const playerName = useSelector(playerNameSelector);
+    const mode = useSelector(modeSelector);
+    const field = useSelector(lastGenerationSelector);
 
     const onTextFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
         setRandom(event.target.value);
@@ -40,47 +34,28 @@ const TopMenu = (props: TopMenuProps) => {
 
     const onRandomButtonClick = () => {
         if (validRandom) {
-            onRandomClick(randomValue);
+            if (mode === "pause") {
+                dispatch(setGen([generateField(field.width, field.height, randomValue)]));
+            }
         }
-    };
-
-    const logOut = () => {
-        dispatch(logout());
     };
 
     return (
         <TopMenuContainer>
-            <Button
-                onClick={() => {
-                    onClick("run");
-                }}
-                active={active === "run"}
-            >
+            <Button onClick={() => dispatch(setMode("run"))} active={mode === "run"}>
                 Run
             </Button>
-            <Button
-                onClick={() => {
-                    onClick("pause");
-                }}
-                active={active === "pause"}
-            >
+            <Button onClick={() => dispatch(setMode("pause"))} active={mode === "pause"}>
                 Pause
             </Button>
-            <Button
-                onClick={() => {
-                    onClick("clear");
-                }}
-                active={active === "clear"}
-            >
-                Clear
-            </Button>
-            <Label>{text}</Label>
+            <Button onClick={() => dispatch(clean())}>Clear</Button>
+            <Label>Generation: {field.generation}</Label>
             <Label>Random generation: </Label>
             <TextField value={random} onChange={onTextFieldChange} error={!validRandom} />
             <Button onClick={onRandomButtonClick}>Generate</Button>
             <ProfileContainer>
                 <Label>{playerName}</Label>
-                <LogoutButton onClick={logOut} id="logout_button" />
+                <LogoutButton onClick={() => dispatch(logout())} id="logout_button" />
             </ProfileContainer>
         </TopMenuContainer>
     );
