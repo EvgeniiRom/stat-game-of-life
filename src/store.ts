@@ -1,5 +1,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import userStatReduser, { loginSaga } from "./store/userStatReduser";
+import gameReduser from "./store/gameReduser";
+import sessionReduser from "./store/sessionReduser";
+import statisticReduser from "./store/statisticReduser";
 import createSagaMiddleware from "redux-saga";
 import { all } from "redux-saga/effects";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
@@ -15,11 +17,13 @@ import {
 } from "redux-persist";
 
 const rootReducer = combineReducers({
-    stat: userStatReduser,
+    game: gameReduser,
+    session: sessionReduser,
+    statistic: statisticReduser,
 });
 
 function* rootSaga() {
-    yield all([loginSaga()]);
+    yield all([]);
 }
 
 const createNoopStorage = () => {
