@@ -1,9 +1,16 @@
 import React from "react";
 import Button from "./styled/Button";
-import BottomMenuContainer from "./styled/BottomMenuContainer";
 import Label from "./styled/Label";
 import { useDispatch, useSelector } from "react-redux";
 import { sizeSelector, speedSelector, setSize, setSpeed } from "../store/gameReduser";
+import MenuContainer from "./styled/MenuContainer";
+import styled from "styled-components";
+
+const BottomMenuContainer = styled(MenuContainer)`
+    grid-area: base;
+    border-radius: 0 0 15px 15px;
+    padding-top: 20px;
+`;
 
 const BottomMenu = () => {
     const dispatch = useDispatch();

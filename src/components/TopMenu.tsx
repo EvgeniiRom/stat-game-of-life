@@ -1,6 +1,5 @@
 import React, { ChangeEvent, useState } from "react";
 import Button from "./styled/Button";
-import TopMenuContainer from "./styled/TopMenuContainer";
 import Label from "./styled/Label";
 import TextField from "./styled/TextField";
 import LogoutButton from "./styled/LogoutButton";
@@ -9,11 +8,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout, playerNameSelector } from "../store/sessionReduser";
 import { modeSelector, setMode, clean, lastGenerationSelector, setGen } from "../store/gameReduser";
 import { generateField } from "../common/Tools";
+import MenuContainer from "./styled/MenuContainer";
 
 const ProfileContainer = styled.div`
     display: flex;
     flex-direction: row;
     height: 100%;
+`;
+
+const TopMenuContainer = styled(MenuContainer)`
+    grid-area: top;
+    border-radius: 15px 15px 0 0;
 `;
 
 const TopMenu = () => {

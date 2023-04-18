@@ -1,7 +1,10 @@
 import styled from "styled-components";
-import GameFieldContainer from "./GameFieldContainer";
+import MainContainer from "./MainContainer";
 
-const DialogContainer = styled(GameFieldContainer)`
+const DialogContainer = styled(MainContainer)`
+    width: fit-content;
+    padding: 10px 20px;
+    border-radius: 15px;
     display: flex;
     flex-direction: column;
     row-gap: 10px;

@@ -7,8 +7,18 @@ import { addGen, lastGenerationSelector, modeSelector, modGen, setMode, speedSel
 import { equalMatrix, generateNextGeneration } from "@/common/Tools";
 import { loginSelector } from "@/store/sessionReduser";
 import { useRouter } from "next/router";
-import ChartContainer from "@/components/styled/ChartContainer";
 import GameChart from "@/components/statistic/GameChart";
+import styled from "styled-components";
+import SessionChart from "@/components/statistic/SessionChart";
+
+const GameContainer = styled("div")`
+    display: grid;
+    grid-template-areas:
+        "tl top tr"
+        "left center right"
+        "bl base br";
+    grid-template-columns: 1fr auto 1fr;
+`;
 
 const Game = () => {
     const field = useSelector(lastGenerationSelector);
@@ -46,14 +56,13 @@ const Game = () => {
     }, [mode, speed, field, dispatch]);
 
     return (
-        <>
-            <ChartContainer>
-                <GameChart width={450} height={50} />
-            </ChartContainer>
+        <GameContainer>
+            <GameChart />
             <TopMenu />
             <GameField field={field.data} onCellClick={onCellClick} />
             <BottomMenu />
-        </>
+            <SessionChart />
+        </GameContainer>
     );
 };
 

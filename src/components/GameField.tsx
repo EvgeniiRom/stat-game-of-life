@@ -1,13 +1,23 @@
 import React from "react";
+import styled from "styled-components";
 import { getCellStateByFieldCell } from "../common/Tools";
 import Cell from "./styled/Cell";
-import GameFieldContainer from "./styled/GameFieldContainer";
 import GameFieldRow from "./styled/GameFieldRow";
+import MainContainer from "./styled/MainContainer";
 
 interface GameFieldProps {
     field: number[][];
     onCellClick?: (x: number, y: number) => void;
 }
+
+const GameFieldContainer = styled(MainContainer)`
+    grid-area: center;
+    width: fit-content;
+    margin: 0 auto;
+    padding: 10px 20px;
+    border-radius: 15px;
+    z-index: 1;
+`;
 
 const GameField = (props: GameFieldProps) => {
     const { field, onCellClick = () => undefined } = props;

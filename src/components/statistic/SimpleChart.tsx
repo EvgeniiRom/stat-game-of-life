@@ -1,3 +1,5 @@
+import styled from "styled-components";
+
 export interface SimpleChartProps extends React.SVGAttributes<SVGElement> {
     data: number[];
     maxValue?: number;
@@ -5,10 +7,19 @@ export interface SimpleChartProps extends React.SVGAttributes<SVGElement> {
     height: number;
 }
 
+const ChartContainer = styled("div")`
+    background: #aaa;
+    border-radius: 10px;
+    box-shadow: 0px 16px 30px 0px #200;
+    border: solid 1px #fff;
+    width: fit-content;
+    margin: 10px auto 15px auto;
+`;
+
 const SimpleChart = (props: SimpleChartProps) => {
     const { data, maxValue, width, height, ...other } = props;
 
-    const max: number = maxValue ? maxValue : data.reduce((a, b) => (a > b ? a : b), 0);
+    const max: number = maxValue ? maxValue : Math.max(...data);
     const hScale = height / max;
     const wScale = 10;
     const visibleData = data.slice(-width / wScale - 1);
@@ -18,9 +29,11 @@ const SimpleChart = (props: SimpleChartProps) => {
         .join(" ");
 
     return (
-        <svg width={width} height={height} {...other} xmlns="http://www.w3.org/2000/svg">
-            <path d={path} fill="none" stroke="#000" />
-        </svg>
+        <ChartContainer>
+            <svg width={width} height={height} {...other} xmlns="http://www.w3.org/2000/svg">
+                <path d={path} fill="none" stroke="#000" />
+            </svg>
+        </ChartContainer>
     );
 };
 

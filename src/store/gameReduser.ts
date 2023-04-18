@@ -128,7 +128,7 @@ function* onAddGen(action: AddGenAction): Generator<PutEffect, void, void> {
     const field = action.field;
     const sum = field.data.reduce((sum, row) => sum + row.reduce((a, b) => a + (b > 0 ? 1 : 0)), 0);
     yield put(addGameStat(sum));
-    yield put(updateSessionStat(sum / (field.width * field.height)));
+    yield put(updateSessionStat((sum / (field.width * field.height)) * 100));
 }
 
 export function* gameSaga(): Generator<PutEffect | ForkEffect, void, string | null> {

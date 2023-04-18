@@ -54,9 +54,9 @@ describe("game saga", () => {
         };
         return expectSaga(gameSaga)
             .dispatch(addGen(generation1))
-            .put(updateSessionStat(0.5))
+            .put(updateSessionStat(50))
             .dispatch(addGen(generation2))
-            .put(updateSessionStat(1))
+            .put(updateSessionStat(100))
             .dispatch(clean())
             .put(fixSessionStat())
             .run({ silenceTimeout: true });
