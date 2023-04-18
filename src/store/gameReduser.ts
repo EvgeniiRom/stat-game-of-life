@@ -1,10 +1,12 @@
+import { addResult, cleanGameStatistic } from "./statisticReduser";
+import { ForkEffect, put, PutEffect, takeEvery } from "redux-saga/effects";
 import { Field, generateField } from "../common/Tools";
 import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const SET_GEN = "src/store/gameReduser/SET_GEN";
-const ADD_GEN = "src/store/gameReduser/ADD_GEN";
+export const ADD_GEN = "src/store/gameReduser/ADD_GEN";
 const MOD_GEN = "src/store/gameReduser/MOD_GEN";
 const SIZE = "src/store/gameReduser/SIZE";
 const SPEED = "src/store/gameReduser/SPEED";
@@ -69,7 +71,9 @@ export default function reducer(state: GameState = initState, action: Action): G
             const generations = [...state.generations.slice(0, state.generations.length - 1), action.field];
             return { ...state, generations };
         case SIZE:
-            return { ...state, size: action.size };
+            const [width, height] = action.size.split("x").map((item) => parseInt(item));
+            const field = generateField(width, height);
+            return { ...state, generations: [field], size: action.size };
         case SPEED:
             return { ...state, speed: action.speed };
         case MODE:
@@ -119,3 +123,15 @@ export const modeSelector = createSelector(
     (state: RootState) => state.game,
     (game: GameState) => game.mode
 );
+
+function* onAddGen(action: AddGenAction): Generator<PutEffect, void, void> {
+    const sum = action.field.data.reduce((sum, row) => sum + row.reduce((a, b) => a + b), 0);
+    yield put(addResult(sum));
+}
+
+export function* gameSaga(): Generator<PutEffect | ForkEffect, void, string | null> {
+    yield takeEvery(ADD_GEN, onAddGen);
+    yield takeEvery([CLEAN, SIZE], function* () {
+        yield put(cleanGameStatistic());
+    });
+}

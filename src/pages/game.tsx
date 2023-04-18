@@ -7,6 +7,7 @@ import { addGen, lastGenerationSelector, modeSelector, modGen, setMode, speedSel
 import { equalMatrix, generateNextGeneration } from "@/common/Tools";
 import { loginSelector } from "@/store/sessionReduser";
 import { useRouter } from "next/router";
+import StatisticLog from "@/components/statistic/StatisticLog";
 
 const Game = () => {
     const field = useSelector(lastGenerationSelector);
@@ -48,6 +49,7 @@ const Game = () => {
 
     return (
         <>
+            <StatisticLog />
             <TopMenu />
             <GameField field={field.data} onCellClick={onCellClick} />
             <BottomMenu />

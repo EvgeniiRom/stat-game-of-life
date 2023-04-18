@@ -1,5 +1,5 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import gameReduser from "./store/gameReduser";
+import gameReduser, { gameSaga } from "./store/gameReduser";
 import sessionReduser, { loginSaga } from "./store/sessionReduser";
 import statisticReduser from "./store/statisticReduser";
 import createSagaMiddleware from "redux-saga";
@@ -12,7 +12,7 @@ const rootReducer = combineReducers({
 });
 
 function* rootSaga() {
-    yield all([loginSaga()]);
+    yield all([loginSaga(), gameSaga()]);
 }
 
 export function setupStore(runSaga: boolean) {
