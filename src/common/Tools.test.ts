@@ -3,7 +3,7 @@ import {
     generateFieldData,
     getEnvironment,
     generateNextGeneration,
-    fillFieldByField,
+    generateFieldByField,
     equalMatrix,
     getCellStateByFieldCell,
 } from "./Tools";
@@ -59,19 +59,9 @@ describe("game processes test", () => {
                     ],
                     width: 3,
                     height: 4,
-                    generation: 2,
+                    generation: 3,
                 };
-                const target = {
-                    data: [
-                        [0, 0],
-                        [0, 0],
-                        [0, 0],
-                    ],
-                    width: 2,
-                    height: 3,
-                    generation: 6,
-                };
-                fillFieldByField(target, source);
+                const target = generateFieldByField(2, 3, source);
                 expect(target).toEqual({
                     data: [
                         [0, 0],
@@ -80,7 +70,7 @@ describe("game processes test", () => {
                     ],
                     width: 2,
                     height: 3,
-                    generation: 6,
+                    generation: 3,
                 });
             });
 
@@ -94,28 +84,17 @@ describe("game processes test", () => {
                     height: 2,
                     generation: 2,
                 };
-                const target = {
-                    data: [
-                        [0, 0, 0],
-                        [0, 0, 0],
-                        [0, 0, 2],
-                        [0, 0, 1],
-                    ],
-                    width: 3,
-                    height: 4,
-                    generation: 3,
-                };
-                fillFieldByField(target, source);
+                const target = generateFieldByField(3, 4, source);
                 expect(target).toEqual({
                     data: [
                         [1, 0, 0],
                         [0, 1, 0],
-                        [0, 0, 2],
-                        [0, 0, 1],
+                        [0, 0, 0],
+                        [0, 0, 0],
                     ],
                     width: 3,
                     height: 4,
-                    generation: 3,
+                    generation: 2,
                 });
             });
         });

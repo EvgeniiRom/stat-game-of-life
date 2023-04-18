@@ -42,14 +42,17 @@ const fillFieldRandom = (fieldData: number[][], width: number, height: number, p
     }
 };
 
-export const fillFieldByField = (targetField: Field, sourceField: Field) => {
-    const width = Math.min(targetField.width, sourceField.width);
-    const height = Math.min(targetField.height, sourceField.height);
-    for (let i = 0; i < height; i++) {
-        for (let j = 0; j < width; j++) {
+export const generateFieldByField = (width: number, height: number, sourceField: Field): Field => {
+    const targetField = generateField(width, height);
+    const minWidth = Math.min(targetField.width, sourceField.width);
+    const minHeight = Math.min(targetField.height, sourceField.height);
+    for (let i = 0; i < minHeight; i++) {
+        for (let j = 0; j < minWidth; j++) {
             targetField.data[i][j] = sourceField.data[i][j];
         }
     }
+    targetField.generation = sourceField.generation;
+    return targetField;
 };
 
 export const getEnvironment = (field: Field): number[][] => {

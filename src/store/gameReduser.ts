@@ -1,4 +1,5 @@
-import { addResult, cleanGameStatistic } from "./statisticReduser";
+import { generateFieldByField } from "./../common/Tools";
+import { addGameStat, cleanGameStatistic, fixSessionStat, updateSessionStat } from "./statisticReduser";
 import { ForkEffect, put, PutEffect, takeEvery } from "redux-saga/effects";
 import { Field, generateField } from "../common/Tools";
 import { createSelector } from "@reduxjs/toolkit";
@@ -71,7 +72,7 @@ export default function reducer(state: GameState = initState, action: Action): G
             return { ...state, generations };
         case SIZE:
             const [width, height] = action.size.split("x").map((item) => parseInt(item));
-            const field = generateField(width, height);
+            const field = generateFieldByField(width, height, state.generations[state.generations.length - 1]);
             return { ...state, generations: [field], size: action.size };
         case SPEED:
             return { ...state, speed: action.speed };
@@ -124,13 +125,16 @@ export const modeSelector = createSelector(
 );
 
 function* onAddGen(action: AddGenAction): Generator<PutEffect, void, void> {
-    const sum = action.field.data.reduce((sum, row) => sum + row.reduce((a, b) => a + b), 0);
-    yield put(addResult(sum));
+    const field = action.field;
+    const sum = field.data.reduce((sum, row) => sum + row.reduce((a, b) => a + (b > 0 ? 1 : 0)), 0);
+    yield put(addGameStat(sum));
+    yield put(updateSessionStat(sum / (field.width * field.height)));
 }
 
 export function* gameSaga(): Generator<PutEffect | ForkEffect, void, string | null> {
     yield takeEvery(ADD_GEN, onAddGen);
-    yield takeEvery([CLEAN, SIZE], function* () {
+    yield takeEvery(CLEAN, function* () {
         yield put(cleanGameStatistic());
+        yield put(fixSessionStat());
     });
 }

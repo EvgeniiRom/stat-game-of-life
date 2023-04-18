@@ -11,10 +11,7 @@ const SimpleChart = (props: SimpleChartProps) => {
     const max: number = maxValue ? maxValue : data.reduce((a, b) => (a > b ? a : b), 0);
     const hScale = height / max;
     const wScale = 10;
-
-    console.log(data);
     const visibleData = data.slice(-width / wScale - 1);
-    console.log(visibleData);
 
     const path = visibleData
         .map((value, index) => `${index === 0 ? "M" : "L"} ${index * wScale} ${(max - value) * hScale}`)
