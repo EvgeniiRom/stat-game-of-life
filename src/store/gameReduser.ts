@@ -13,7 +13,6 @@ const SPEED = "src/store/gameReduser/SPEED";
 const MODE = "src/store/gameReduser/MODE";
 const CLEAN = "src/store/gameReduser/CLEAN";
 
-export type SpeedType = "slow" | "medium" | "fast";
 export type SizeType = "50x30" | "70x50" | "100x80";
 export type ModeType = "run" | "pause";
 
@@ -35,7 +34,7 @@ interface SizeAction {
 }
 interface SpeedAction {
     type: typeof SPEED;
-    speed: SpeedType;
+    speed: number;
 }
 interface ModeAction {
     type: typeof MODE;
@@ -49,14 +48,14 @@ type Action = SetGenAction | AddGenAction | ModGenAction | SizeAction | SpeedAct
 
 interface GameState {
     generations: Field[];
-    speed: SpeedType;
+    speed: number;
     size: SizeType;
     mode: ModeType;
 }
 
 const initState: GameState = {
     generations: [generateField(50, 30)],
-    speed: "medium",
+    speed: 400,
     size: "50x30",
     mode: "pause",
 };
@@ -97,7 +96,7 @@ export const addGen = (field: Field): Action => {
 export const setSize = (size: SizeType): Action => {
     return { type: SIZE, size };
 };
-export const setSpeed = (speed: SpeedType): Action => {
+export const setSpeed = (speed: number): Action => {
     return { type: SPEED, speed };
 };
 export const setMode = (mode: ModeType): Action => {

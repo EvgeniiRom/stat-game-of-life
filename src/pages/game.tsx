@@ -7,7 +7,8 @@ import { addGen, lastGenerationSelector, modeSelector, modGen, setMode, speedSel
 import { equalMatrix, generateNextGeneration } from "@/common/Tools";
 import { loginSelector } from "@/store/sessionReduser";
 import { useRouter } from "next/router";
-import StatisticLog from "@/components/statistic/StatisticLog";
+import ChartContainer from "@/components/styled/ChartContainer";
+import GameChart from "@/components/statistic/GameChart";
 
 const Game = () => {
     const field = useSelector(lastGenerationSelector);
@@ -32,9 +33,6 @@ const Game = () => {
 
     useEffect(() => {
         if (mode === "run") {
-            let intervalValue = 400;
-            if (speed === "slow") intervalValue = 600;
-            if (speed === "fast") intervalValue = 150;
             const interval = setInterval(() => {
                 const nextGen = generateNextGeneration(field);
                 if (equalMatrix(field.data, nextGen.data)) {
@@ -42,14 +40,16 @@ const Game = () => {
                 } else {
                     dispatch(addGen(nextGen));
                 }
-            }, intervalValue);
+            }, speed);
             return () => clearTimeout(interval);
         }
     }, [mode, speed, field, dispatch]);
 
     return (
         <>
-            <StatisticLog />
+            <ChartContainer>
+                <GameChart width={450} height={50} />
+            </ChartContainer>
             <TopMenu />
             <GameField field={field.data} onCellClick={onCellClick} />
             <BottomMenu />

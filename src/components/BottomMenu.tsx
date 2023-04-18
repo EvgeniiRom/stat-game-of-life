@@ -23,13 +23,13 @@ const BottomMenu = () => {
                 Size: 100x80
             </Button>
             <Label>Sim Speed:</Label>
-            <Button onClick={() => dispatch(setSpeed("slow"))} active={speed === "slow"}>
+            <Button onClick={() => dispatch(setSpeed(600))} active={speed === 600}>
                 Slow
             </Button>
-            <Button onClick={() => dispatch(setSpeed("medium"))} active={speed === "medium"}>
+            <Button onClick={() => dispatch(setSpeed(400))} active={speed === 400}>
                 Medium
             </Button>
-            <Button onClick={() => dispatch(setSpeed("fast"))} active={speed === "fast"}>
+            <Button onClick={() => dispatch(setSpeed(200))} active={speed === 200}>
                 Fast
             </Button>
         </BottomMenuContainer>
