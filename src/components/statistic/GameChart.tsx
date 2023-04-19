@@ -22,7 +22,7 @@ const GameChart = (props: GameChartProps) => {
     return (
         <GameChartContainer>
             <Label>Current game</Label>
-            <SimpleChart data={data} width={120} height={40} {...props} />
+            <SimpleChart data={data} width={140} height={40} {...props} />
             <MinMaxAvr data={data} />
         </GameChartContainer>
     );

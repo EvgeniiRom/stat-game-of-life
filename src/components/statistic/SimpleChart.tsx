@@ -13,7 +13,7 @@ const ChartContainer = styled("div")`
     box-shadow: 0px 16px 30px 0px #200;
     border: solid 1px #fff;
     width: fit-content;
-    margin: 10px auto 15px auto;
+    margin: 10px auto;
 `;
 
 const SimpleChart = (props: SimpleChartProps) => {

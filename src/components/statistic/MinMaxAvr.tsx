@@ -9,6 +9,7 @@ const MinMaxAvrContainer = styled("div")`
     grid-template-columns: auto auto;
     gap: 5px;
     color: #ddd;
+    padding: 5px;
 `;
 
 const MinMaxAvr = (props: MinMaxAvrProps) => {
