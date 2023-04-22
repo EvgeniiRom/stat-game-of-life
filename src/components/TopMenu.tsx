@@ -7,8 +7,9 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, playerNameSelector } from "../store/sessionReduser";
 import { modeSelector, setMode, clean, generationSelector, newGame } from "../store/gameReduser";
-import { generateField } from "../common/Tools";
+import { fillFieldRandom } from "../common/Tools";
 import MenuContainer from "./styled/MenuContainer";
+import { colorSelectior } from "../store/configReduser";
 
 const ProfileContainer = styled.div`
     display: flex;
@@ -28,6 +29,7 @@ const TopMenu = () => {
     const playerName = useSelector(playerNameSelector);
     const mode = useSelector(modeSelector);
     const field = useSelector(generationSelector);
+    const color = useSelector(colorSelectior);
 
     const onTextFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
         setRandom(event.target.value);
@@ -40,7 +42,7 @@ const TopMenu = () => {
     const onRandomButtonClick = () => {
         if (validRandom) {
             if (mode === "pause") {
-                dispatch(newGame(generateField(field.width, field.height, randomValue)));
+                dispatch(newGame(fillFieldRandom(field, randomValue, color)));
             }
         }
     };

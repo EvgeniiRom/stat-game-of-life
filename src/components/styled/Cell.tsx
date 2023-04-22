@@ -10,6 +10,7 @@ const Cell = styled.div<CellProps>`
     width: 10px;
     height: 10px;
     transition: background-color 1s;
+    user-select: none;
 `;
 
 export default Cell;

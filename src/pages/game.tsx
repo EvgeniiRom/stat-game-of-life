@@ -10,6 +10,8 @@ import { useRouter } from "next/router";
 import GameChart from "@/components/statistic/GameChart";
 import styled from "styled-components";
 import SessionChart from "@/components/statistic/SessionChart";
+import ColorPicker from "@/components/color-picker/ColorPicker";
+import { colorSelectior } from "@/store/configReduser";
 
 const GameContainer = styled("div")`
     display: grid;
@@ -20,11 +22,27 @@ const GameContainer = styled("div")`
     grid-template-columns: 1fr auto 1fr;
 `;
 
+const StyledColorPicker = styled(ColorPicker)`
+    grid-area: right2;
+    border-radius: 0 15px 15px 0;
+    margin: auto auto auto 0px;
+    padding: 10px;
+`;
+
+const RightMenu = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    grid-area: right;
+    margin: 15px auto auto 0px;
+`;
+
 const Game = () => {
     const field = useSelector(generationSelector);
     const mode = useSelector(modeSelector);
     const speed = useSelector(speedSelector);
     const isLogin = useSelector(loginSelector);
+    const color = useSelector(colorSelectior);
     const dispatch = useDispatch();
     const router = useRouter();
 
@@ -34,7 +52,7 @@ const Game = () => {
 
     const onCellClick = (x: number, y: number) => {
         if (mode === "pause") {
-            const fieldData = field.data.map((row, i) => row.map((cell, j) => (i === x && j === y ? "#ff0000" : cell)));
+            const fieldData = field.data.map((row, i) => row.map((cell, j) => (i === x && j === y ? color : cell)));
             dispatch(nextGen({ ...field, data: fieldData }));
         }
     };
@@ -55,7 +73,10 @@ const Game = () => {
 
     return (
         <GameContainer>
-            <GameChart />
+            <RightMenu>
+                <GameChart />
+                <StyledColorPicker />
+            </RightMenu>
             <TopMenu />
             <GameField field={field.data} onCellClick={onCellClick} />
             <BottomMenu />

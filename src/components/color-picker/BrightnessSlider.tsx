@@ -8,6 +8,7 @@ interface BrightnessGradientProps {
 const BrightnessContainer = styled.div`
     display: flex;
     flex-direction: row;
+    height: 90px;
 `;
 
 const Slider = styled.input`
@@ -15,12 +16,14 @@ const Slider = styled.input`
     width: 8px;
     padding: 0px 10px;
     margin: 0px;
+    height: 100%;
 `;
 
 const BrightnessGradient = styled.div<BrightnessGradientProps>`
     width: 20px;
     height: 100%;
     background: ${({ color }) => `linear-gradient(white, ${color}, black)`};
+    user-select: none;
 `;
 
 interface BrightnessSliderProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -35,7 +38,7 @@ const brHexColor = (value: string, brightness: number) => {
 };
 
 const BrightnessSlider = (props: BrightnessSliderProps) => {
-    const { onChangeColor: onColorChange, color, ...other } = props;
+    const { onChangeColor, color, ...other } = props;
 
     const [value, setValue] = useState<number>(0);
 
@@ -45,8 +48,8 @@ const BrightnessSlider = (props: BrightnessSliderProps) => {
             brHexColor(color.substring(1, 3), value) +
             brHexColor(color.substring(3, 5), value) +
             brHexColor(color.substring(5, 7), value);
-        onColorChange(brColor);
-    }, [value, color, onColorChange]);
+        onChangeColor(brColor);
+    }, [value, color, onChangeColor]);
 
     return (
         <BrightnessContainer {...other}>

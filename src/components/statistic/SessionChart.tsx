@@ -12,7 +12,7 @@ type SessionChartProps = Omit<SimpleChartProps, "data" | "width" | "height">;
 const SessionChartContainer = styled(MainContainer)`
     grid-area: left;
     border-radius: 15px 0 0 15px;
-    margin: auto 0px auto auto;
+    margin: 15px 0px auto auto;
     padding: 10px;
     display: flex;
     flex-direction: column;

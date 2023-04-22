@@ -5,6 +5,8 @@ import {
     generateNextGeneration,
     generateFieldByField,
     equalMatrix,
+    fillFieldRandom,
+    FieldColor,
 } from "./Tools";
 
 describe("game processes test", () => {
@@ -31,23 +33,24 @@ describe("game processes test", () => {
 
         describe("random filled", () => {
             it("valid percent", () => {
-                const getSum = (array: (string | undefined)[][]) =>
+                const getSum = (array: FieldColor[][]) =>
                     array.reduce((sum, row) => row.reduce((a, b) => a + (b ? 1 : 0), 0) + sum, 0);
-                expect(getSum(generateFieldData(10, 10, 0))).toBe(0);
-                expect(getSum(generateFieldData(10, 10, 17))).toBe(17);
-                expect(getSum(generateFieldData(10, 10, 42))).toBe(42);
-                expect(getSum(generateFieldData(10, 10, 100))).toBe(100);
-                expect(getSum(generateFieldData(120, 40, 80))).toBe(3840);
+                expect(getSum(fillFieldRandom(generateField(10, 10), 0, "#ff0000").data)).toBe(0);
+                expect(getSum(fillFieldRandom(generateField(10, 10), 17, "#ff0000").data)).toBe(17);
+                expect(getSum(fillFieldRandom(generateField(10, 10), 42, "#ff0000").data)).toBe(42);
+                expect(getSum(fillFieldRandom(generateField(10, 10), 100, "#ff0000").data)).toBe(100);
+                expect(getSum(fillFieldRandom(generateField(120, 40), 80, "#ff0000").data)).toBe(3840);
             });
 
-            it("different fields", () => {
+            it("double fill", () => {
                 const getSum = (array: (string | undefined)[][]) =>
                     array.reduce((sum, row) => row.reduce((a, b) => a + (b ? 1 : 0), 0) + sum, 0);
-                const res1 = generateFieldData(123, 45, 42);
-                const res2 = generateFieldData(123, 45, 42);
-                expect(getSum(res1)).toBe(2324);
-                expect(getSum(res2)).toBe(2324);
-                expect(res1).not.toEqual(res2);
+                const field = generateField(10, 10);
+                const field2 = fillFieldRandom(field, 42, "#ff0000");
+                const field3 = fillFieldRandom(field2, 58, "#ff0000");
+                expect(getSum(field.data)).toBe(0);
+                expect(getSum(field2.data)).toBe(42);
+                expect(getSum(field3.data)).toBe(100);
             });
         });
 

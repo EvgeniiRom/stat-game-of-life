@@ -18,6 +18,7 @@ const GrayGradient = styled.div`
     width: 100%;
     height: 100%;
     background: linear-gradient(#7770, #777f);
+    user-select: none;
 `;
 
 const getGreen = (hP: number, vP: number): number => {

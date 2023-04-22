@@ -14,6 +14,7 @@ const Label = styled.div<LabelProps>`
     color: #ddd;
     font-size: ${({ size = "medium" }) => sizes[size]};
     margin: auto;
+    user-select: none;
 `;
 
 export default Label;

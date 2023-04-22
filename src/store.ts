@@ -2,6 +2,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import gameReduser, { gameSaga } from "./store/gameReduser";
 import sessionReduser, { loginSaga } from "./store/sessionReduser";
 import statisticReduser from "./store/statisticReduser";
+import configReduser from "./store/configReduser";
 import createSagaMiddleware from "redux-saga";
 import { all } from "redux-saga/effects";
 
@@ -9,6 +10,7 @@ const rootReducer = combineReducers({
     game: gameReduser,
     session: sessionReduser,
     statistic: statisticReduser,
+    config: configReduser,
 });
 
 function* rootSaga() {

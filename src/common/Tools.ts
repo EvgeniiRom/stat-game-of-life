@@ -1,11 +1,13 @@
+export type FieldColor = string | undefined;
+
 export interface Field {
-    data: (string | undefined)[][];
+    data: FieldColor[][];
     width: number;
     height: number;
     generation: number;
 }
 
-export const generateFieldData = (width: number, height: number, randomPercent = 0): (string | undefined)[][] => {
+export const generateFieldData = (width: number, height: number): FieldColor[][] => {
     const result = [];
     for (let i = 0; i < height; i++) {
         const row = [];
@@ -14,22 +16,25 @@ export const generateFieldData = (width: number, height: number, randomPercent =
         }
         result.push(row);
     }
-    fillFieldRandom(result, width, height, randomPercent);
     return result;
 };
 
-const fillFieldRandom = (fieldData: (string | undefined)[][], width: number, height: number, percent: number) => {
+export const fillFieldRandom = (field: Field, percent: number, color: string): Field => {
+    const result = generateFieldByField(field.width, field.height, field);
+    result.generation = 0;
+    const { data, width, height } = result;
     const count = Math.floor((width * height * percent) / 100);
+    const alive = data.reduce((sum, row) => sum + row.reduce((a, b) => a + (b ? 1 : 0), 0), 0);
     for (let r = 0; r < count; r++) {
         let deadOffset = 0;
-        const rand = Math.floor(Math.random() * (width * height - r)) + 1;
+        const rand = Math.floor(Math.random() * (width * height - r - alive)) + 1;
         for (let i = 0; i < height; i++) {
             for (let j = 0; j < width; j++) {
-                if (fieldData[i][j] === undefined) {
+                if (data[i][j] === undefined) {
                     deadOffset++;
                 }
                 if (rand === deadOffset) {
-                    fieldData[i][j] = getRandom();
+                    data[i][j] = color || getRandom();
                     break;
                 }
             }
@@ -38,6 +43,7 @@ const fillFieldRandom = (fieldData: (string | undefined)[][], width: number, hei
             }
         }
     }
+    return result;
 };
 
 export const generateFieldByField = (width: number, height: number, sourceField: Field): Field => {
@@ -119,9 +125,9 @@ export const generateNextGeneration = (field: Field): Field => {
     return { ...field, data: result, generation: generation + 1 };
 };
 
-export const generateField = (width: number, height: number, randomPercent = 0): Field => {
+export const generateField = (width: number, height: number): Field => {
     return {
-        data: generateFieldData(width, height, randomPercent),
+        data: generateFieldData(width, height),
         width: width,
         height: height,
         generation: 0,
