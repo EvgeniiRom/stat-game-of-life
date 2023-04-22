@@ -3,7 +3,7 @@ import GameField from "../components/GameField";
 import TopMenu from "../components/TopMenu";
 import BottomMenu from "../components/BottomMenu";
 import { useDispatch, useSelector } from "react-redux";
-import { addGen, lastGenerationSelector, modeSelector, modGen, setMode, speedSelector } from "@/store/gameReduser";
+import { generationSelector, modeSelector, nextGen, setMode, speedSelector } from "@/store/gameReduser";
 import { equalMatrix, generateNextGeneration } from "@/common/Tools";
 import { loginSelector } from "@/store/sessionReduser";
 import { useRouter } from "next/router";
@@ -21,7 +21,7 @@ const GameContainer = styled("div")`
 `;
 
 const Game = () => {
-    const field = useSelector(lastGenerationSelector);
+    const field = useSelector(generationSelector);
     const mode = useSelector(modeSelector);
     const speed = useSelector(speedSelector);
     const isLogin = useSelector(loginSelector);
@@ -34,21 +34,19 @@ const Game = () => {
 
     const onCellClick = (x: number, y: number) => {
         if (mode === "pause") {
-            const fieldData = field.data.map((row, i) =>
-                row.map((cell, j) => (i === x && j === y ? (cell > 0 ? 0 : 1) : cell))
-            );
-            dispatch(modGen({ ...field, data: fieldData }));
+            const fieldData = field.data.map((row, i) => row.map((cell, j) => (i === x && j === y ? "#ff0000" : cell)));
+            dispatch(nextGen({ ...field, data: fieldData }));
         }
     };
 
     useEffect(() => {
         if (mode === "run") {
             const interval = setInterval(() => {
-                const nextGen = generateNextGeneration(field);
-                if (equalMatrix(field.data, nextGen.data)) {
+                const nextField = generateNextGeneration(field);
+                if (equalMatrix(field.data, nextField.data)) {
                     dispatch(setMode("pause"));
                 } else {
-                    dispatch(addGen(nextGen));
+                    dispatch(nextGen(nextField));
                 }
             }, speed);
             return () => clearTimeout(interval);

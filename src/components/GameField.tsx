@@ -1,12 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { getCellStateByFieldCell } from "../common/Tools";
 import Cell from "./styled/Cell";
 import GameFieldRow from "./styled/GameFieldRow";
 import MainContainer from "./styled/MainContainer";
 
 interface GameFieldProps {
-    field: number[][];
+    field: (string | undefined)[][];
     onCellClick?: (x: number, y: number) => void;
 }
 
@@ -29,7 +28,7 @@ const GameField = (props: GameFieldProps) => {
                     {row.map((cell, j) => (
                         <Cell
                             key={j}
-                            state={getCellStateByFieldCell(cell)}
+                            color={cell}
                             onClick={() => {
                                 onCellClick(i, j);
                             }}

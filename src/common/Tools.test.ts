@@ -5,32 +5,34 @@ import {
     generateNextGeneration,
     generateFieldByField,
     equalMatrix,
-    getCellStateByFieldCell,
 } from "./Tools";
 
 describe("game processes test", () => {
     describe("create field", () => {
         describe("empty", () => {
             it("5x2", () => {
+                const u = undefined;
                 expect(generateFieldData(5, 2)).toEqual([
-                    [0, 0, 0, 0, 0],
-                    [0, 0, 0, 0, 0],
+                    [u, u, u, u, u],
+                    [u, u, u, u, u],
                 ]);
             });
 
             it("3x4", () => {
+                const u = undefined;
                 expect(generateFieldData(3, 4)).toEqual([
-                    [0, 0, 0],
-                    [0, 0, 0],
-                    [0, 0, 0],
-                    [0, 0, 0],
+                    [u, u, u],
+                    [u, u, u],
+                    [u, u, u],
+                    [u, u, u],
                 ]);
             });
         });
 
         describe("random filled", () => {
             it("valid percent", () => {
-                const getSum = (array: number[][]) => array.reduce((sum, row) => row.reduce((a, b) => a + b) + sum, 0);
+                const getSum = (array: (string | undefined)[][]) =>
+                    array.reduce((sum, row) => row.reduce((a, b) => a + (b ? 1 : 0), 0) + sum, 0);
                 expect(getSum(generateFieldData(10, 10, 0))).toBe(0);
                 expect(getSum(generateFieldData(10, 10, 17))).toBe(17);
                 expect(getSum(generateFieldData(10, 10, 42))).toBe(42);
@@ -39,7 +41,8 @@ describe("game processes test", () => {
             });
 
             it("different fields", () => {
-                const getSum = (array: number[][]) => array.reduce((sum, row) => row.reduce((a, b) => a + b) + sum, 0);
+                const getSum = (array: (string | undefined)[][]) =>
+                    array.reduce((sum, row) => row.reduce((a, b) => a + (b ? 1 : 0), 0) + sum, 0);
                 const res1 = generateFieldData(123, 45, 42);
                 const res2 = generateFieldData(123, 45, 42);
                 expect(getSum(res1)).toBe(2324);
@@ -50,12 +53,15 @@ describe("game processes test", () => {
 
         describe("by another field", () => {
             it("source bigger", () => {
+                const u = undefined;
+                const r = "#ff0000";
+                const g = "#00ff00";
                 const source = {
                     data: [
-                        [0, 0, 1],
-                        [0, 1, 0],
-                        [2, 0, 0],
-                        [0, 1, 2],
+                        [u, u, r],
+                        [u, r, u],
+                        [g, u, u],
+                        [u, r, g],
                     ],
                     width: 3,
                     height: 4,
@@ -64,9 +70,9 @@ describe("game processes test", () => {
                 const target = generateFieldByField(2, 3, source);
                 expect(target).toEqual({
                     data: [
-                        [0, 0],
-                        [0, 1],
-                        [2, 0],
+                        [u, u],
+                        [u, r],
+                        [g, u],
                     ],
                     width: 2,
                     height: 3,
@@ -75,10 +81,12 @@ describe("game processes test", () => {
             });
 
             it("source smaller", () => {
+                const u = undefined;
+                const r = "#ff0000";
                 const source = {
                     data: [
-                        [1, 0],
-                        [0, 1],
+                        [r, u],
+                        [u, r],
                     ],
                     width: 2,
                     height: 2,
@@ -87,10 +95,10 @@ describe("game processes test", () => {
                 const target = generateFieldByField(3, 4, source);
                 expect(target).toEqual({
                     data: [
-                        [1, 0, 0],
-                        [0, 1, 0],
-                        [0, 0, 0],
-                        [0, 0, 0],
+                        [r, u, u],
+                        [u, r, u],
+                        [u, u, u],
+                        [u, u, u],
                     ],
                     width: 3,
                     height: 4,
@@ -102,36 +110,45 @@ describe("game processes test", () => {
 
     describe("environment", () => {
         it("single", () => {
+            const u = undefined;
+            const g = "#00ff00";
+            const e: string[] = [];
+            const n = [g];
             const data = [
-                [0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0],
-                [0, 0, 1, 0, 0],
-                [0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0],
+                [u, u, u, u, u],
+                [u, u, u, u, u],
+                [u, u, g, u, u],
+                [u, u, u, u, u],
+                [u, u, u, u, u],
             ];
             expect(getEnvironment({ data, generation: 0, width: 5, height: 5 })).toEqual([
-                [0, 0, 0, 0, 0],
-                [0, 1, 1, 1, 0],
-                [0, 1, 0, 1, 0],
-                [0, 1, 1, 1, 0],
-                [0, 0, 0, 0, 0],
+                [e, e, e, e, e],
+                [e, n, n, n, e],
+                [e, n, e, n, e],
+                [e, n, n, n, e],
+                [e, e, e, e, e],
             ]);
         });
 
         it("double", () => {
+            const u = undefined;
+            const b = "#0000ff";
+            const e: string[] = [];
+            const n = [b];
+            const d = [b, b];
             const data = [
-                [0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0],
-                [0, 0, 1, 0, 0, 0],
-                [0, 0, 0, 1, 0, 0],
-                [0, 0, 0, 0, 0, 0],
+                [u, u, u, u, u, u],
+                [u, u, u, u, u, u],
+                [u, u, b, u, u, u],
+                [u, u, u, b, u, u],
+                [u, u, u, u, u, u],
             ];
             expect(getEnvironment({ data, generation: 0, width: 6, height: 5 })).toEqual([
-                [0, 0, 0, 0, 0, 0],
-                [0, 1, 1, 1, 0, 0],
-                [0, 1, 1, 2, 1, 0],
-                [0, 1, 2, 1, 1, 0],
-                [0, 0, 1, 1, 1, 0],
+                [e, e, e, e, e, e],
+                [e, n, n, n, e, e],
+                [e, n, n, d, n, e],
+                [e, n, d, n, n, e],
+                [e, e, n, n, n, e],
             ]);
         });
     });
@@ -146,19 +163,21 @@ describe("game processes test", () => {
         });
 
         it("circle", () => {
+            const u = undefined;
+            const b = "#0000ff";
             const state1 = [
-                [0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0],
-                [0, 1, 2, 1, 0, 0],
-                [0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0],
+                [u, u, u, u, u, u],
+                [u, u, u, u, u, u],
+                [u, b, b, b, u, u],
+                [u, u, u, u, u, u],
+                [u, u, u, u, u, u],
             ];
             const state2 = [
-                [0, 0, 0, 0, 0, 0],
-                [0, 0, 1, 0, 0, 0],
-                [0, 0, 2, 0, 0, 0],
-                [0, 0, 1, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0],
+                [u, u, u, u, u, u],
+                [u, u, b, u, u, u],
+                [u, u, b, u, u, u],
+                [u, u, b, u, u, u],
+                [u, u, u, u, u, u],
             ];
             const field0 = { data: state1, width: 6, height: 5, generation: 0 };
             const field1 = { data: state2, width: 6, height: 5, generation: 1 };
@@ -170,33 +189,24 @@ describe("game processes test", () => {
 
     describe("matrix equal", () => {
         const a = [
-            [1, 2, 3],
-            [4, 5, 6],
+            [undefined, "#ff0000", "#ff00ff"],
+            ["#ff0000", undefined, "#ff00ff"],
         ];
         const b = [
-            [1, 2, 3],
-            [4, 5, 6],
+            [undefined, "#ff0000", "#ff00ff"],
+            ["#ff0000", undefined, "#ff00ff"],
         ];
         const c = [
-            [1, 2, 3],
-            [4, 5, 7],
+            [undefined, "#ff0000", "#ff00ff"],
+            ["#ff0000", undefined, undefined],
         ];
-        const d = [[1, 2, 3]];
-        const e = [[1, 2, 3]];
+        const d = [[undefined, "#ff0000", "#ff00ff"]];
+        const e = [[undefined, "#ff0000", "#ff00ff"]];
         expect(equalMatrix(a, b)).toBe(true);
         expect(equalMatrix(a, c)).toBe(false);
         expect(equalMatrix(b, c)).toBe(false);
         expect(equalMatrix(b, d)).toBe(false);
         expect(equalMatrix(c, d)).toBe(false);
         expect(equalMatrix(d, e)).toBe(true);
-    });
-
-    describe("cell state", () => {
-        expect(() => getCellStateByFieldCell(-1)).toThrowError();
-        expect(getCellStateByFieldCell(0)).toBe("dead");
-        expect(getCellStateByFieldCell(1)).toBe("young");
-        expect(getCellStateByFieldCell(2)).toBe("old");
-        expect(() => getCellStateByFieldCell(3)).toThrowError();
-        expect(() => getCellStateByFieldCell(123512)).toThrowError();
     });
 });

@@ -11,23 +11,29 @@ export default {
 const Template: ComponentStory<typeof GameField> = (args) => <GameField {...args} />;
 
 export const AllDead = Template.bind({});
+
+const u = undefined;
+const r = "#ff0000";
+const g = "#00ff00";
+const b = "#0000ff";
+
 AllDead.args = {
     field: [
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
+        [u, u, u, u, u],
+        [u, u, u, u, u],
+        [u, u, u, u, u],
+        [u, u, u, u, u],
+        [u, u, u, u, u],
     ],
 };
 
 export const Chess = Template.bind({});
 Chess.args = {
     field: [
-        [0, 1, 2, 0, 1],
-        [1, 2, 0, 1, 2],
-        [2, 0, 1, 2, 0],
-        [0, 1, 2, 0, 1],
-        [1, 2, 0, 1, 0],
+        [u, r, g, b, u],
+        [r, g, b, u, r],
+        [g, b, u, r, g],
+        [b, u, r, g, b],
+        [u, r, g, b, u],
     ],
 };

@@ -1,14 +1,17 @@
 import { Field } from "./../common/Tools";
 import { expectSaga } from "redux-saga-test-plan";
-import { addGen, clean, gameSaga } from "./gameReduser";
+import { clean, gameSaga, nextGen } from "./gameReduser";
 import { addGameStat, cleanGameStatistic, fixSessionStat, updateSessionStat } from "./statisticReduser";
 
 describe("game saga", () => {
     test("game statistic", () => {
+        const u = undefined;
+        const r = "#ff0000";
+        const g = "#00ff00";
         const generation1: Field = {
             data: [
-                [0, 1, 2],
-                [1, 0, 0],
+                [u, r, g],
+                [r, u, u],
             ],
             width: 3,
             height: 2,
@@ -16,17 +19,17 @@ describe("game saga", () => {
         };
         const generation2: Field = {
             data: [
-                [1, 1, 2],
-                [1, 1, 1],
+                [r, r, g],
+                [r, r, r],
             ],
             width: 3,
             height: 2,
             generation: 1,
         };
         return expectSaga(gameSaga)
-            .dispatch(addGen(generation1))
+            .dispatch(nextGen(generation1))
             .put(addGameStat(3))
-            .dispatch(addGen(generation2))
+            .dispatch(nextGen(generation2))
             .put(addGameStat(6))
             .dispatch(clean())
             .put(cleanGameStatistic())
@@ -34,10 +37,13 @@ describe("game saga", () => {
     });
 
     test("session statistic", () => {
+        const u = undefined;
+        const r = "#ff0000";
+        const g = "#00ff00";
         const generation1: Field = {
             data: [
-                [0, 1, 2],
-                [1, 0, 0],
+                [u, r, g],
+                [r, u, u],
             ],
             width: 3,
             height: 2,
@@ -45,17 +51,17 @@ describe("game saga", () => {
         };
         const generation2: Field = {
             data: [
-                [1, 1, 2],
-                [1, 1, 1],
+                [r, r, g],
+                [r, r, r],
             ],
             width: 3,
             height: 2,
             generation: 1,
         };
         return expectSaga(gameSaga)
-            .dispatch(addGen(generation1))
+            .dispatch(nextGen(generation1))
             .put(updateSessionStat(50))
-            .dispatch(addGen(generation2))
+            .dispatch(nextGen(generation2))
             .put(updateSessionStat(100))
             .dispatch(clean())
             .put(fixSessionStat())

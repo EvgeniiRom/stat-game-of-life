@@ -6,9 +6,8 @@ import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const SET_GEN = "src/store/gameReduser/SET_GEN";
-export const ADD_GEN = "src/store/gameReduser/ADD_GEN";
-const MOD_GEN = "src/store/gameReduser/MOD_GEN";
+const NEXT_GEN = "src/store/gameReduser/NEXT_GEN";
+const NEW_GAME = "src/store/gameReduser/NEW_GAME";
 const SIZE = "src/store/gameReduser/SIZE";
 const SPEED = "src/store/gameReduser/SPEED";
 const MODE = "src/store/gameReduser/MODE";
@@ -17,16 +16,12 @@ const CLEAN = "src/store/gameReduser/CLEAN";
 export type SizeType = "50x30" | "70x50" | "100x80";
 export type ModeType = "run" | "pause";
 
-interface SetGenAction {
-    type: typeof SET_GEN;
-    generations: Field[];
-}
-interface AddGenAction {
-    type: typeof ADD_GEN;
+interface NextGenAction {
+    type: typeof NEXT_GEN;
     field: Field;
 }
-interface ModGenAction {
-    type: typeof MOD_GEN;
+interface NewGameAction {
+    type: typeof NEW_GAME;
     field: Field;
 }
 interface SizeAction {
@@ -45,17 +40,17 @@ interface CleanAction {
     type: typeof CLEAN;
 }
 
-type Action = SetGenAction | AddGenAction | ModGenAction | SizeAction | SpeedAction | ModeAction | CleanAction;
+type Action = NextGenAction | NewGameAction | SizeAction | SpeedAction | ModeAction | CleanAction;
 
 interface GameState {
-    generations: Field[];
+    field: Field;
     speed: number;
     size: SizeType;
     mode: ModeType;
 }
 
 const initState: GameState = {
-    generations: [generateField(50, 30)],
+    field: generateField(50, 30),
     speed: 400,
     size: "50x30",
     mode: "pause",
@@ -63,36 +58,29 @@ const initState: GameState = {
 
 export default function reducer(state: GameState = initState, action: Action): GameState {
     switch (action.type) {
-        case SET_GEN:
-            return { ...state, generations: action.generations };
-        case ADD_GEN:
-            return { ...state, generations: [...state.generations, action.field] };
-        case MOD_GEN:
-            const generations = [...state.generations.slice(0, state.generations.length - 1), action.field];
-            return { ...state, generations };
+        case NEXT_GEN:
+        case NEW_GAME:
+            return { ...state, field: action.field };
         case SIZE:
             const [width, height] = action.size.split("x").map((item) => parseInt(item));
-            const field = generateFieldByField(width, height, state.generations[state.generations.length - 1]);
-            return { ...state, generations: [field], size: action.size };
+            const field = generateFieldByField(width, height, state.field);
+            return { ...state, field: field, size: action.size };
         case SPEED:
             return { ...state, speed: action.speed };
         case MODE:
             return { ...state, mode: action.mode };
         case CLEAN:
-            return { ...initState };
+            return { ...state, field: generateField(state.field.width, state.field.height) };
         default:
             return state;
     }
 }
 
-export const setGen = (generations: Field[]): Action => {
-    return { type: SET_GEN, generations };
+export const nextGen = (field: Field): Action => {
+    return { type: NEXT_GEN, field };
 };
-export const modGen = (field: Field): Action => {
-    return { type: MOD_GEN, field };
-};
-export const addGen = (field: Field): Action => {
-    return { type: ADD_GEN, field };
+export const newGame = (field: Field): Action => {
+    return { type: NEW_GAME, field };
 };
 export const setSize = (size: SizeType): Action => {
     return { type: SIZE, size };
@@ -107,9 +95,9 @@ export const clean = (): Action => {
     return { type: CLEAN };
 };
 
-export const lastGenerationSelector = createSelector(
+export const generationSelector = createSelector(
     (state: RootState) => state.game,
-    (game: GameState) => game.generations[game.generations.length - 1]
+    (game: GameState) => game.field
 );
 export const sizeSelector = createSelector(
     (state: RootState) => state.game,
@@ -124,16 +112,16 @@ export const modeSelector = createSelector(
     (game: GameState) => game.mode
 );
 
-function* onAddGen(action: AddGenAction): Generator<PutEffect, void, void> {
+function* onNextGen(action: NextGenAction): Generator<PutEffect, void, void> {
     const field = action.field;
-    const sum = field.data.reduce((sum, row) => sum + row.reduce((a, b) => a + (b > 0 ? 1 : 0)), 0);
+    const sum = field.data.reduce((sum, row) => sum + row.reduce((a, b) => a + (b ? 1 : 0), 0), 0);
     yield put(addGameStat(sum));
     yield put(updateSessionStat((sum / (field.width * field.height)) * 100));
 }
 
 export function* gameSaga(): Generator<PutEffect | ForkEffect, void, string | null> {
-    yield takeEvery(ADD_GEN, onAddGen);
-    yield takeEvery(CLEAN, function* () {
+    yield takeEvery(NEXT_GEN, onNextGen);
+    yield takeEvery([NEW_GAME, CLEAN], function* () {
         yield put(cleanGameStatistic());
         yield put(fixSessionStat());
     });

@@ -6,7 +6,7 @@ import LogoutButton from "./styled/LogoutButton";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, playerNameSelector } from "../store/sessionReduser";
-import { modeSelector, setMode, clean, lastGenerationSelector, setGen } from "../store/gameReduser";
+import { modeSelector, setMode, clean, generationSelector, newGame } from "../store/gameReduser";
 import { generateField } from "../common/Tools";
 import MenuContainer from "./styled/MenuContainer";
 
@@ -27,7 +27,7 @@ const TopMenu = () => {
     const dispatch = useDispatch();
     const playerName = useSelector(playerNameSelector);
     const mode = useSelector(modeSelector);
-    const field = useSelector(lastGenerationSelector);
+    const field = useSelector(generationSelector);
 
     const onTextFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
         setRandom(event.target.value);
@@ -40,7 +40,7 @@ const TopMenu = () => {
     const onRandomButtonClick = () => {
         if (validRandom) {
             if (mode === "pause") {
-                dispatch(setGen([generateField(field.width, field.height, randomValue)]));
+                dispatch(newGame(generateField(field.width, field.height, randomValue)));
             }
         }
     };

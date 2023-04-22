@@ -1,17 +1,11 @@
 import styled from "styled-components";
 
 export interface CellProps {
-    state: "dead" | "young" | "old";
+    color?: string;
 }
 
-const bgColors = {
-    dead: "#aaa",
-    young: "#f22",
-    old: "#a22",
-};
-
 const Cell = styled.div<CellProps>`
-    background-color: ${(props) => bgColors[props.state]};
+    background-color: ${(props) => props.color};
     border: solid 1px #000;
     width: 10px;
     height: 10px;
