@@ -12,6 +12,7 @@ import styled from "styled-components";
 import SessionChart from "@/components/statistic/SessionChart";
 import ColorPicker from "@/components/color-picker/ColorPicker";
 import { colorSelectior } from "@/store/configReduser";
+import ColorChart from "@/components/statistic/ColorChart";
 
 const GameContainer = styled("div")`
     display: grid;
@@ -27,6 +28,14 @@ const StyledColorPicker = styled(ColorPicker)`
     border-radius: 0 15px 15px 0;
     margin: auto auto auto 0px;
     padding: 10px;
+`;
+
+const LeftMenu = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    grid-area: left;
+    margin: 15px 0px auto auto;
 `;
 
 const RightMenu = styled.div`
@@ -80,7 +89,10 @@ const Game = () => {
             <TopMenu />
             <GameField field={field.data} onCellClick={onCellClick} />
             <BottomMenu />
-            <SessionChart />
+            <LeftMenu>
+                <SessionChart />
+                <ColorChart />
+            </LeftMenu>
         </GameContainer>
     );
 };

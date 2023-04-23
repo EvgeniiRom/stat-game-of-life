@@ -1,9 +1,15 @@
-import { generateFieldByField } from "./../common/Tools";
-import { addGameStat, cleanGameStatistic, fixSessionStat, updateSessionStat } from "./statisticReduser";
+import { createGameStat, generateFieldByField } from "./../common/Tools";
 import { ForkEffect, put, PutEffect, takeEvery } from "redux-saga/effects";
 import { Field, generateField } from "../common/Tools";
 import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../store";
+import {
+    addGameStat,
+    cleanGameStatistic,
+    fixSessionStat,
+    updataColorStat,
+    updateSessionStat,
+} from "./statisticReduser";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const NEXT_GEN = "src/store/gameReduser/NEXT_GEN";
@@ -113,10 +119,10 @@ export const modeSelector = createSelector(
 );
 
 function* onNextGen(action: NextGenAction): Generator<PutEffect, void, void> {
-    const field = action.field;
-    const sum = field.data.reduce((sum, row) => sum + row.reduce((a, b) => a + (b ? 1 : 0), 0), 0);
-    yield put(addGameStat(sum));
-    yield put(updateSessionStat((sum / (field.width * field.height)) * 100));
+    const stat = createGameStat(action.field);
+    yield put(addGameStat(stat.sum));
+    yield put(updataColorStat(stat.colorStat));
+    yield put(updateSessionStat(stat.percent));
 }
 
 export function* gameSaga(): Generator<PutEffect | ForkEffect, void, string | null> {

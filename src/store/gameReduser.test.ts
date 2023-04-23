@@ -1,7 +1,13 @@
 import { Field } from "./../common/Tools";
 import { expectSaga } from "redux-saga-test-plan";
 import { clean, gameSaga, nextGen } from "./gameReduser";
-import { addGameStat, cleanGameStatistic, fixSessionStat, updateSessionStat } from "./statisticReduser";
+import {
+    addGameStat,
+    cleanGameStatistic,
+    fixSessionStat,
+    updataColorStat,
+    updateSessionStat,
+} from "./statisticReduser";
 
 describe("game saga", () => {
     test("game statistic", () => {
@@ -65,6 +71,38 @@ describe("game saga", () => {
             .put(updateSessionStat(100))
             .dispatch(clean())
             .put(fixSessionStat())
+            .run({ silenceTimeout: true });
+    });
+
+    test("color statistic", () => {
+        const u = undefined;
+        const r = "#ff0000";
+        const g = "#00ff00";
+        const generation1: Field = {
+            data: [
+                [u, r, g],
+                [r, u, u],
+            ],
+            width: 3,
+            height: 2,
+            generation: 0,
+        };
+        const generation2: Field = {
+            data: [
+                [r, r, g],
+                [r, r, r],
+            ],
+            width: 3,
+            height: 2,
+            generation: 1,
+        };
+        return expectSaga(gameSaga)
+            .dispatch(nextGen(generation1))
+            .put(updataColorStat({ "#ff0000": 2, "#00ff00": 1 }))
+            .dispatch(nextGen(generation2))
+            .put(updataColorStat({ "#ff0000": 5, "#00ff00": 1 }))
+            .dispatch(clean())
+            .put(cleanGameStatistic())
             .run({ silenceTimeout: true });
     });
 });

@@ -146,3 +146,17 @@ export const equalMatrix = (m1: (string | undefined)[][], m2: (string | undefine
     }
     return true;
 };
+
+export const createGameStat = (field: Field) => {
+    let sum = 0;
+    const colorStat: Record<string, number> = {};
+    for (const row of field.data) {
+        for (const cell of row) {
+            if (cell) {
+                sum++;
+                colorStat[cell] = (colorStat[cell] || 0) + 1;
+            }
+        }
+    }
+    return { sum, colorStat, percent: (sum / (field.width * field.height)) * 100 };
+};

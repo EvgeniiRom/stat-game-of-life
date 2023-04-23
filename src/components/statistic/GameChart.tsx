@@ -9,7 +9,6 @@ import Label from "../styled/Label";
 type GameChartProps = Omit<SimpleChartProps, "data" | "width" | "height">;
 
 const GameChartContainer = styled(MainContainer)`
-    grid-area: right1;
     border-radius: 0 15px 15px 0;
     margin: auto auto auto 0px;
     padding: 10px;
