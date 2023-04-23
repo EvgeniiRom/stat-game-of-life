@@ -10,18 +10,20 @@ interface HistogramTowerCoords {
 interface HistogramTowerProps {
     coords: HistogramTowerCoords;
     color: string;
+    disableStartAnimation?: boolean;
 }
 
 const HistogramTower = (props: HistogramTowerProps) => {
-    const { coords, color } = props;
+    const { coords, color, disableStartAnimation = false } = props;
     const { x1, x2, y1, y2 } = coords;
+    const sy = disableStartAnimation ? y2 : y1;
 
     const [springs] = useSpring(
         {
-            from: { d: `M${x1} ${y1} L${x1} ${y1} L${x2} ${y1} L${x2} ${y1}` },
+            from: { d: `M${x1} ${y1} L${x1} ${sy} L${x2} ${sy} L${x2} ${y1}` },
             to: { d: `M${x1} ${y1} L${x1} ${y2} L${x2} ${y2} L${x2} ${y1}` },
         },
-        [x1, x2, y1, y2]
+        [x1, x2, y1, y2, sy]
     );
 
     return <animated.path key={color} fill={color} {...springs} />;

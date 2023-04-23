@@ -14,6 +14,7 @@ const TextField = styled.input<TextFieldProps>`
     height: 22px;
     font-size: 16px;
     border-radius: 5px;
+    margin: auto;
 `;
 
 export default TextField;

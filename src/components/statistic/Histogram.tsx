@@ -2,10 +2,11 @@ import HistogramTower from "./HistogramTower";
 
 interface HistogramProps {
     data: Record<string, number>;
+    disableStartAnimation?: boolean;
 }
 
 const Histogram = (props: HistogramProps) => {
-    const { data } = props;
+    const { data, disableStartAnimation } = props;
 
     const width = 180;
     const height = 90;
@@ -21,7 +22,9 @@ const Histogram = (props: HistogramProps) => {
             y1: height,
             y2: height - (data[color] / max) * height,
         };
-        return <HistogramTower key={color} coords={coords} color={color} />;
+        return (
+            <HistogramTower key={color} coords={coords} color={color} disableStartAnimation={disableStartAnimation} />
+        );
     });
 
     return (
