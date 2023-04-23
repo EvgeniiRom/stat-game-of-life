@@ -3,7 +3,7 @@ import GameField from "../components/GameField";
 import TopMenu from "../components/TopMenu";
 import BottomMenu from "../components/BottomMenu";
 import { useDispatch, useSelector } from "react-redux";
-import { generationSelector, modeSelector, nextGen, setMode, speedSelector } from "@/store/gameReduser";
+import { generationSelector, modeSelector, newGame, nextGen, setMode, speedSelector } from "@/store/gameReduser";
 import { equalMatrix, generateNextGeneration } from "@/common/Tools";
 import { loginSelector } from "@/store/sessionReduser";
 import { useRouter } from "next/router";
@@ -62,7 +62,7 @@ const Game = () => {
     const onCellClick = (x: number, y: number) => {
         if (mode === "pause") {
             const fieldData = field.data.map((row, i) => row.map((cell, j) => (i === x && j === y ? color : cell)));
-            dispatch(nextGen({ ...field, data: fieldData }));
+            dispatch(newGame({ ...field, data: fieldData, generation: 0 }));
         }
     };
 

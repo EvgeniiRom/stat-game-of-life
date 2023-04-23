@@ -19,7 +19,7 @@ export const generateFieldData = (width: number, height: number): FieldColor[][]
     return result;
 };
 
-export const fillFieldRandom = (field: Field, percent: number, color: string): Field => {
+export const fillFieldRandom = (field: Field, percent: number, color?: string): Field => {
     const result = generateFieldByField(field.width, field.height, field);
     result.generation = 0;
     const { data, width, height } = result;

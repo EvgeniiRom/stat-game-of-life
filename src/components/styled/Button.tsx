@@ -10,10 +10,10 @@ const Button = styled.button<ButtonProps>`
     transition: color 0.3s;
     transition: background-color 0.3s;
     display: inline-block;
-    width: 140px;
     height: 27px;
     font-size: 16px;
     border-radius: 5px;
+    flex-grow: 1;
 `;
 
 export default Button;

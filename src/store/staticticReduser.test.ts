@@ -3,6 +3,7 @@ import reducer, { cleanSessionStatistic, fixSessionStat, StatisticState, updateS
 describe("statisticReduser", () => {
     it("update session", () => {
         const state: StatisticState = {
+            colorStat: {},
             gameStat: [5, 2, 6],
             sessionStat: [4, 2, 7],
             lastSessionFixed: false,
@@ -12,6 +13,7 @@ describe("statisticReduser", () => {
     });
     it("update fixed session", () => {
         const state: StatisticState = {
+            colorStat: {},
             gameStat: [5, 2, 6],
             sessionStat: [4, 2, 7],
             lastSessionFixed: false,
@@ -22,12 +24,14 @@ describe("statisticReduser", () => {
     });
     it("clean session", () => {
         const state: StatisticState = {
+            colorStat: {},
             gameStat: [5, 2, 6],
             sessionStat: [4, 2, 7],
             lastSessionFixed: true,
         };
         const state2 = reducer(state, cleanSessionStatistic());
         expect(state2).toEqual({
+            colorStat: {},
             gameStat: [5, 2, 6],
             sessionStat: [],
             lastSessionFixed: false,

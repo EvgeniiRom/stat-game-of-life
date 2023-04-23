@@ -2,7 +2,6 @@ import React, { ChangeEvent, useState } from "react";
 import Button from "./styled/Button";
 import Label from "./styled/Label";
 import TextField from "./styled/TextField";
-import LogoutButton from "./styled/LogoutButton";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, playerNameSelector } from "../store/sessionReduser";
@@ -10,11 +9,15 @@ import { modeSelector, setMode, clean, generationSelector, newGame } from "../st
 import { fillFieldRandom } from "../common/Tools";
 import MenuContainer from "./styled/MenuContainer";
 import { colorSelectior } from "../store/configReduser";
+import logoutIcon from "../icons/logout.svg";
+import simpleColorsIcon from "../icons/simpleColors.svg";
+import SvgButton from "./styled/SvgButton";
 
 const ProfileContainer = styled.div`
     display: flex;
     flex-direction: row;
     height: 100%;
+    gap: 5px;
 `;
 
 const TopMenuContainer = styled(MenuContainer)`
@@ -39,10 +42,10 @@ const TopMenu = () => {
     const randomValue: number = matchResult === undefined ? 101 : parseInt(matchResult);
     const validRandom = randomValue <= 100;
 
-    const onRandomButtonClick = () => {
+    const onRandomButtonClick = (rColor?: string) => () => {
         if (validRandom) {
             if (mode === "pause") {
-                dispatch(newGame(fillFieldRandom(field, randomValue, color)));
+                dispatch(newGame(fillFieldRandom(field, randomValue, rColor)));
             }
         }
     };
@@ -59,10 +62,17 @@ const TopMenu = () => {
             <Label>Generation: {field.generation}</Label>
             <Label>Random generation: </Label>
             <TextField value={random} onChange={onTextFieldChange} error={!validRandom} />
-            <Button onClick={onRandomButtonClick}>Generate</Button>
+            <ProfileContainer>
+                <Button onClick={onRandomButtonClick(color)}>
+                    <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="10" height="10" x="0" y="0" fill={color} />
+                    </svg>
+                </Button>
+                <SvgButton icon={simpleColorsIcon.src} onClick={onRandomButtonClick()} />
+            </ProfileContainer>
             <ProfileContainer>
                 <Label>{playerName}</Label>
-                <LogoutButton onClick={() => dispatch(logout())} id="logout_button" />
+                <SvgButton icon={logoutIcon.src} onClick={() => dispatch(logout())} />
             </ProfileContainer>
         </TopMenuContainer>
     );

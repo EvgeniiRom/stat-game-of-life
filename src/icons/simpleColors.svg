@@ -1,0 +1,8 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 30 20">
+  <rect width="10" height="10" x="0" y="0" fill="#f00"/>
+  <rect width="10" height="10" x="10" y="0" fill="#ff0"/>
+  <rect width="10" height="10" x="20" y="0" fill="#0f0"/>
+  <rect width="10" height="10" x="0" y="10" fill="#0ff"/>
+  <rect width="10" height="10" x="10" y="10" fill="#00f"/>
+  <rect width="10" height="10" x="20" y="10" fill="#f0f"/>
+</svg>
