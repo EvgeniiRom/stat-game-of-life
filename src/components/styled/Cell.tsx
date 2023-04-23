@@ -5,7 +5,7 @@ export interface CellProps {
 }
 
 const Cell = styled.div<CellProps>`
-    background-color: ${(props) => props.color};
+    background-color: ${(props) => props.color || "#666"};
     border: solid 1px #000;
     width: 10px;
     height: 10px;

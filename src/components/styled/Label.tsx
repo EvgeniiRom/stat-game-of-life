@@ -16,6 +16,7 @@ const Label = styled.div<LabelProps>`
     margin: auto;
     user-select: none;
     flex-grow: 1;
+    text-align: center;
     padding: 0px 5px;
 `;
 
